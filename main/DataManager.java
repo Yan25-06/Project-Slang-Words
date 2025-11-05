@@ -1,14 +1,13 @@
 package main;
 
 import java.io.*;
-import java.util.List;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class DataManager {
     public static final String SLANG_TXT = "data/slang.txt";
     public static final String SLANG_DAT = "data/slang_map.dat";
-    public static final String INDEX_DAT = "data/index.dat";
+    public static final String DEFINATION_DAT = "data/defination_map.dat";
     public static final String HISTORY_TXT = "data/history.txt";
 
     @SuppressWarnings("unchecked")
@@ -24,6 +23,19 @@ public class DataManager {
         }
         return loadSlangFromText();
     }
+    @SuppressWarnings("unchecked")
+    public static HashMap<String, List<String>> loadDef() throws Exception {
+        File dat = new File(DEFINATION_DAT);
+        if (dat.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(dat))) {
+                return (HashMap<String, List<String>>) ois.readObject();
+            } 
+            catch (Exception e) {
+                System.out.println("Failed to read defination_map.dat, will rebuild from slang.txt");
+            }
+        }
+        return loadDefFromText();
+    }
     private static HashMap<String, List<String>> loadSlangFromText() throws Exception {
         HashMap<String, List<String>> slangMap = new HashMap<>();
         BufferedReader fr = new BufferedReader(new FileReader(SLANG_TXT));
@@ -32,7 +44,7 @@ public class DataManager {
             String[] parts = line.split("`");
             if (parts.length != 2) 
                 continue;
-            String slang = parts[0].trim();
+            String slang = parts[0].trim().toLowerCase(Locale.ROOT);
             String[] definitions = parts[1].split("\\|");
             for (int i = 0; i < definitions.length; i++) {
                 definitions[i] = definitions[i].trim();
@@ -43,10 +55,39 @@ public class DataManager {
         saveSlangDat(slangMap);
         return slangMap;
     }
+    private static HashMap<String, List<String>> loadDefFromText() throws Exception {
+        HashMap<String, List<String>> defMap = new HashMap<>();
+        BufferedReader fr = new BufferedReader(new FileReader(SLANG_TXT));
+        String line;
+        while ((line = fr.readLine()) != null) {
+            String[] parts = line.split("`");
+            if (parts.length != 2) 
+                continue;
+            String slang = parts[0].trim();
+            String[] definitions = parts[1].split("\\|");
+            for (String definition : definitions) {
+                definition = definition.trim().toLowerCase(Locale.ROOT);
+                defMap.putIfAbsent(definition, new ArrayList<>());
+                defMap.get(definition).add(slang);
+            }
+        }
+        fr.close();
+        saveDefDat(defMap);
+        return defMap;
+    }
     private static void saveSlangDat(HashMap<String, List<String>> slangMap) throws Exception {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SLANG_DAT))) {
             oos.writeObject(slangMap); 
-            System.out.println("Hashmap was saved!");
+            System.out.println("Slang hashmap was saved!");
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void saveDefDat(HashMap<String, List<String>> defMap) throws Exception {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DEFINATION_DAT))) {
+            oos.writeObject(defMap); 
+            System.out.println("Defination hashmap was saved!");
         } 
         catch (IOException e) {
             e.printStackTrace();

@@ -10,8 +10,13 @@ public class SlangDictionary {
 
     public SlangDictionary() throws Exception {
         this.slangMap = DataManager.loadSlang();
+        this.definitionMap = DataManager.loadDef();
     }
-    public List<String> get(String slang) {
-        return slangMap.get(slang);
+    public List<String> searchSlang(String slang) {
+        System.out.println("Searching for slang: " + slang.toLowerCase());
+        return slangMap.get(slang.toLowerCase());
+    }
+    public List<String> searchDefinition(String definition) {
+        return definitionMap.get(definition.toLowerCase());
     }
 }
