@@ -36,6 +36,25 @@ public class DataManager {
         }
         return loadDefFromText();
     }
+    public static void saveToHistory(String slang) throws Exception {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(HISTORY_TXT, true))) {
+            bw.write(slang);
+            bw.newLine();
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static List<String> loadHistory() throws Exception {
+        List<String> history = new ArrayList<>();
+        BufferedReader fr = new BufferedReader(new FileReader(HISTORY_TXT));
+        String line;
+        while ((line = fr.readLine()) != null) {
+            history.add(line.trim());
+        }
+        fr.close();
+        return history;
+    }
     private static HashMap<String, List<String>> loadSlangFromText() throws Exception {
         HashMap<String, List<String>> slangMap = new HashMap<>();
         BufferedReader fr = new BufferedReader(new FileReader(SLANG_TXT));
