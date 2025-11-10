@@ -21,6 +21,8 @@ public class Main{
             System.out.println("2. Search by definition");
             System.out.println("3. Show history");
             System.out.println("4. Add slang");
+            System.out.println("5. Edit slang");
+            System.out.println("0. Exit");
             System.out.print("Choose: ");
             choice = Integer.parseInt(scanner.nextLine());
 
@@ -42,6 +44,15 @@ public class Main{
                     System.out.println("Enter a definition of the slang:");
                     String defination = scanner.nextLine();
                     dictionary.addSlang(slang, defination);
+                }
+                case 5 -> {
+                    System.out.println("Enter a slang word to edit:");
+                    String slang = scanner.nextLine();
+                    System.out.println("Enter the old definition of the slang:");
+                    String oldDef = scanner.nextLine();
+                    System.out.println("Enter the new definition of the slang:");
+                    String newDef = scanner.nextLine();
+                    dictionary.editSlang(slang, oldDef, newDef);
                 }
                 case 0 -> System.out.println("Exiting...");
                 default -> System.out.println("Invalid choice!");

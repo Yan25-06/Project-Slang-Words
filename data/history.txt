@@ -10,3 +10,5 @@ hehe -> null
 :> -> [1, hehee, keke, hhahaah, hihi]
 keke -> [:>]
 brb -> [Be Right Back]
+:> -> [1, hehee, keke, hhahaah, hihi]
+:> -> [1, hehee, keke, hhahaah, kaka]

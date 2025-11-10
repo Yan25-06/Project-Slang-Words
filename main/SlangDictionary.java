@@ -72,6 +72,23 @@ public class SlangDictionary {
         updateSlangMap();
         updateDefMap();
     }
+    public void editSlang(String slang, String oldDefinition, String newDefinition) {
+        if (slangMap.containsKey(slang)) {
+            List<String> existingDef = slangMap.get(slang);
+            if (!existingDef.contains(oldDefinition)) {
+                System.out.println("Old definition not found for this slang word.");
+                return;
+            }
+            existingDef.remove(oldDefinition);
+            existingDef.add(newDefinition);
+            slangMap.put(slang, existingDef);
+            System.out.println("Slang word updated.");
+            updateSlangMap();
+        } 
+        else {
+            System.out.println("Slang word not found.");
+        }
+    }
     private void updateSlangMap() {
         try {
             DataManager.saveSlangDat(slangMap);
