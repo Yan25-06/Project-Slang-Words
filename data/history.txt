@@ -1,0 +1,12 @@
+:))) -> null
+=))) -> [hihi]
+hehe -> null
+=))) -> [hehe]
+:> -> [Mischievous smile]
+:> -> [1]
+:> -> [1, hehee]
+:> -> [1, hehee, keke, hhahaah]
+:> -> [1, hehee, keke, hhahaah, hihi]
+:> -> [1, hehee, keke, hhahaah, hihi]
+keke -> [:>]
+brb -> [Be Right Back]
