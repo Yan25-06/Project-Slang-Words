@@ -58,7 +58,7 @@ public class DataManager {
         }
         return history;
     }
-    private static HashMap<String, List<String>> loadSlangFromText() throws Exception {
+    public static HashMap<String, List<String>> loadSlangFromText() throws Exception {
         HashMap<String, List<String>> slangMap = new HashMap<>();
         BufferedReader fr = new BufferedReader(new FileReader(SLANG_TXT));
         String line;
@@ -78,7 +78,7 @@ public class DataManager {
         saveSlangDat(slangMap);
         return slangMap;
     }
-    private static HashMap<String, List<String>> loadDefFromText() throws Exception {
+    public static HashMap<String, List<String>> loadDefFromText() throws Exception {
         HashMap<String, List<String>> defMap = new HashMap<>();
         BufferedReader fr = new BufferedReader(new FileReader(SLANG_TXT));
         String line;

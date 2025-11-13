@@ -12,3 +12,37 @@ keke -> [:>]
 brb -> [Be Right Back]
 :> -> [1, hehee, keke, hhahaah, hihi]
 :> -> [1, hehee, keke, hhahaah, kaka]
+:> -> null
+:> -> null
+>< -> [Frustration]
+>.< -> [Frustrated, angry, upset, in pain]
+angry -> [>,<, >.<, >:(, >:O, :@, D:<, DROVE, GUH, PISSED, PISSED OFF, VEXED]
+>< -> null
+Frustrated -> [>.<, >_<, /O\]
+Frustration -> [><, ACK, ARGH, ASDFGHJKL, DOH, GAH, GRR, GRRR, ORZ, TCH]
+ACK -> [Disgust, frustration, Acknowledgement]
+ACK -> [Disgust, frustration, Acknowledgement]
+sda -> [Seventh-Day Adventist]
+Disgust -> [:|, ACK, BUH, EWW, FEH, YUCK]
+ACK -> null
+<> -> [Not equal, No comment]
+No comment -> [<>, =X, NC]
+No comment -> [<>, =X, NC]
+... -> [Silence, A Trailing Thought]
+Silence -> [...]
+.. -> null
+... -> [Silence, A Trailing Thought]
+... -> [Silence, A Trailing Thought]
+... -> null
+Silence -> []
+A trailing thought -> []
+in pain -> null
+brb -> [Be Right Back]
+Be Right Back -> [BRB]
+Be Right Back -> [BRB]
+brb -> null
+be right back -> []
+be right back -> null
+AWS -> [As We Speak]
+HB -> [Hurry Back]
+HB -> [Hurry Back]
