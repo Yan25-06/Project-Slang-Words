@@ -138,6 +138,8 @@ public class SlangDictionary {
             definitionMap.remove(oldDef);
             definitionMap.put(newDef, slangsForNewDef);
             System.out.println("Definition edited.");
+            updateDefMap();
+            updateSlangMap();
         } 
         else {
             System.out.println("Invalid choice.");
@@ -179,14 +181,12 @@ public class SlangDictionary {
         try {
             slangMap = DataManager.loadSlangFromText();
             definitionMap = DataManager.loadDefFromText();
-            System.out.println("Dictionary has been reset to original state.");
         } 
         catch (Exception e) {
             e.printStackTrace();
         }
-        updateDefMap();
-        updateSlangMap();
     }
+    
     private void updateSlangMap() {
         try {
             DataManager.saveSlangDat(slangMap);

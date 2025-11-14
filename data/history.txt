@@ -101,3 +101,11 @@ lol -> [laugh lol]
 laugh lol -> [LOL]
 laugh out loud    -> null
 laugh out loud -> [LOLZ]
+:> -> [Mischievous smile]
+angryyyyy -> [>,<, >.<, >:(, >:O, :@, D:<, DROVE, GUH, PISSED, PISSED OFF, VEXED]
+>.< -> [Frustrated, upset, in pain, angryyyyy]
+<.> -> null
+... -> [Silence, A Trailing Thought]
+... -> [Silence, A Trailing Thought, shhhhh]
+shhhhh -> [...]
+... -> [Silence, A Trailing Thought]

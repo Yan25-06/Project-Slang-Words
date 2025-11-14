@@ -23,6 +23,7 @@ public class Main{
             System.out.println("4. Add slang");
             System.out.println("5. Edit slang");
             System.out.println("6. Delete slang");
+            System.out.println("7. Reset dictionary");
             System.out.println("0. Exit");
             System.out.print("Choose: ");
             choice = Integer.parseInt(scanner.nextLine());
@@ -55,6 +56,10 @@ public class Main{
                     System.out.println("Enter a slang word to delete:");
                     String slang = scanner.nextLine();
                     dictionary.deleteSlang(slang);
+                }
+                case 7 -> {
+                    dictionary.resetDictionary();
+                    System.out.println("Dictionary has been reset.");
                 }
                 case 0 -> System.out.print("Exiting...");
                 default -> System.out.println("Invalid choice!");
