@@ -24,6 +24,9 @@ public class Main{
             System.out.println("5. Edit slang");
             System.out.println("6. Delete slang");
             System.out.println("7. Reset dictionary");
+            System.out.println("8. Random slang word");
+            System.out.println("9. Quiz slang word");
+            System.out.println("10. Quiz definition");
             System.out.println("0. Exit");
             System.out.print("Choose: ");
             choice = Integer.parseInt(scanner.nextLine());
@@ -61,6 +64,13 @@ public class Main{
                     dictionary.resetDictionary();
                     System.out.println("Dictionary has been reset.");
                 }
+                case 8 -> {
+                    String randomSlang = dictionary.getRandomSlang();
+                    System.out.println("Random Slang Word: " + randomSlang);
+                    System.out.println("Definitions: " + dictionary.searchSlang(randomSlang));
+                }
+                case 9 -> dictionary.quizSlang();
+                case 10 -> dictionary.quizDefinition();
                 case 0 -> System.out.print("Exiting...");
                 default -> System.out.println("Invalid choice!");
             }

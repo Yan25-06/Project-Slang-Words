@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -186,7 +187,86 @@ public class SlangDictionary {
             e.printStackTrace();
         }
     }
-    
+    public String getRandomSlang() {
+        List<String> keys = new ArrayList<>(slangMap.keySet());
+        int randomIndex = (int) (Math.random() * keys.size());
+        return keys.get(randomIndex);
+    }
+    public String getRandomDefinition() {
+        List<String> keys = new ArrayList<>(definitionMap.keySet());
+        int randomIndex = (int) (Math.random() * keys.size());
+        return keys.get(randomIndex);
+    }
+    public void quizSlang() {
+        String slang = getRandomSlang();
+        List<String> correctDefs = slangMap.get(slang);
+        String correctDef = correctDefs.get(0); 
+
+        List<String> allDefinitions = new ArrayList<>();
+        for (List<String> defs : slangMap.values()) {
+            allDefinitions.addAll(defs);
+        }
+
+        allDefinitions.remove(correctDef);
+
+        Collections.shuffle(allDefinitions);
+        List<String> wrongAnswers = allDefinitions.subList(0, 3);
+
+        List<String> options = new ArrayList<>();
+        options.add(correctDef);
+        options.addAll(wrongAnswers);
+
+        Collections.shuffle(options);
+
+        System.out.println("What is the definition of: " + slang + "?");
+        for (int i = 0; i < 4; i++) {
+            System.out.println((i + 1) + ". " + options.get(i));
+        }
+
+        System.out.print("Your answer: ");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        if (options.get(choice - 1).equals(correctDef)) {
+            System.out.println("Correct!");
+        } else {
+            System.out.println("Wrong! The correct answer is: " + correctDef);
+        }
+    }
+    public void quizDefinition() {
+        String def = getRandomDefinition();
+        List<String> correctSlangs = definitionMap.get(def);
+        String correctSlang = correctSlangs.get(0); 
+
+        List<String> allSlangs = new ArrayList<>();
+        for (List<String> slangs : definitionMap.values()) {
+            allSlangs.addAll(slangs);
+        }
+        allSlangs.remove(correctSlang);
+
+        Collections.shuffle(allSlangs);
+        List<String> wrongSlangs = allSlangs.subList(0, 3);
+
+        List<String> options = new ArrayList<>();
+        options.add(correctSlang);
+        options.addAll(wrongSlangs);
+
+        Collections.shuffle(options);
+
+        System.out.println("Which slang matches this definition?");
+        System.out.println("Definition: " + def);
+        for (int i = 0; i < 4; i++) {
+            System.out.println((i + 1) + ". " + options.get(i));
+        }
+
+        System.out.print("Your answer: ");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        if (options.get(choice - 1).equals(correctSlang)) {
+            System.out.println("Correct!");
+        } else {
+            System.out.println("Wrong! The correct answer is: " + correctSlang);
+        }
+    }
     private void updateSlangMap() {
         try {
             DataManager.saveSlangDat(slangMap);
