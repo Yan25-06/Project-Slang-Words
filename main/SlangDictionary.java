@@ -15,8 +15,8 @@ public class SlangDictionary {
         this.definitionMap = DataManager.loadDef();
     }
     public List<String> searchSlang(String slang) throws Exception {
-        List<String> mean = slangMap.get(slang.toLowerCase());
-        DataManager.saveToHistory(slang + " -> " + slangMap.get(slang.toLowerCase()));
+        List<String> mean = slangMap.get(slang.toUpperCase());
+        DataManager.saveToHistory(slang + " -> " + slangMap.get(slang.toUpperCase()));
         return mean;
     }
     public List<String> searchDefinition(String definition) throws Exception {
@@ -32,6 +32,7 @@ public class SlangDictionary {
         }
     }
     public void addSlang(String slang, String definations) {
+        slang = slang.toUpperCase();
         List<String> newDefs = new ArrayList<>();
         newDefs.add(definations);
         List<String> newSlangs = new ArrayList<>();
@@ -72,32 +73,78 @@ public class SlangDictionary {
         updateSlangMap();
         updateDefMap();
     }
-    public void editSlang(String slang, String oldDefinition, String newDefinition) {
-        if (slangMap.containsKey(slang)) {
-            List<String> existingDef = slangMap.get(slang);
-            if (!existingDef.contains(oldDefinition)) {
-                System.out.println("Old definition not found for this slang word.");
+    public void editSlang(String slang) {
+        slang = slang.toUpperCase();
+        if (!slangMap.containsKey(slang)) {
+            System.out.println("Slang word not found.");
+            return;
+        }
+        System.out.println("1. Edit Slang");
+        System.out.println("2. Edit Definition");
+        System.out.println("Choose: ");
+        int choice;
+        choice = Integer.parseInt(scanner.nextLine());
+        if (choice == 1) {
+            System.out.println("Enter new slang word: ");
+            String newSlang = scanner.nextLine().toUpperCase();
+            if (slangMap.containsKey(newSlang)) {
+                System.out.println("Slang word already exists.");
                 return;
             }
-            List<String> slangs = definitionMap.get(oldDefinition);
+            List<String> definitions = slangMap.get(slang);
+            slangMap.remove(slang);
+            slangMap.put(newSlang, definitions);
+            for (String def : definitions) {
+                def = def.toLowerCase();
+                List<String> slangs = definitionMap.get(def);
+                slangs.remove(slang);
+                slangs.add(newSlang);
+                definitionMap.put(def, slangs);
+            }
+            System.out.println("Slang word edited.");
+        } 
+        else if (choice == 2) {
+            List<String> definitions = slangMap.get(slang);
+            for (int i = 0; i < definitions.size(); i++) {
+                System.out.println((i + 1) + ". " + definitions.get(i));
+            }
+            System.out.println("Choose definition to edit: ");
+            int defChoice = Integer.parseInt(scanner.nextLine());
+            String newDef;
+            String oldDef = definitions.get(defChoice - 1);
+            while (true)
+            {
+                System.out.println("Enter new definition: ");
+                newDef = scanner.nextLine().trim();
+                if (definitionMap.containsKey(newDef.toLowerCase())) {
+                    System.out.println("Definition existed, try again.");
+                }
+                else
+                    break;
+            }
+            // Update slangMap
+            List<String> slangs = definitionMap.get(oldDef.toLowerCase());
+            System.out.print(slangs);
             for (String s : slangs) {
                 List<String> defs = slangMap.get(s);
-                defs.remove(oldDefinition);
-                defs.add(newDefinition);
+                System.out.println(defs);
+                defs.remove(oldDef);
+                defs.add(newDef);
                 slangMap.put(s, defs);
             }
-            definitionMap.remove(oldDefinition);
-            definitionMap.put(newDefinition, slangs);
-            System.out.println("Slang word updated.");
-            updateSlangMap();
-            updateDefMap();
+            // Update definitionMap
+            List<String> slangsForNewDef = definitionMap.get(oldDef.toLowerCase());
+
+            definitionMap.remove(oldDef);
+            definitionMap.put(newDef, slangsForNewDef);
+            System.out.println("Definition edited.");
         } 
         else {
-            System.out.println("Slang word not found.");
+            System.out.println("Invalid choice.");
         }
     }
     public void deleteSlang(String slang) {
-        slang = slang.toLowerCase();
+        slang = slang.toUpperCase();
         if (slangMap.containsKey(slang)) {
             System.out.println("Are you sure you want to delete this slang word? (Y/N)");
             String confirmation = scanner.nextLine();
@@ -106,23 +153,18 @@ public class SlangDictionary {
                 return;
             }
             List<String> definitions = slangMap.get(slang);
-            System.out.println(definitions);
             for (String def : definitions) {
-                List<String> slangs = definitionMap.get(def.toLowerCase());
+                def = def.toLowerCase();
+                List<String> slangs = definitionMap.get(def);
                 if (slangs != null) {
-                    System.out.println(slangs);
-                    slangs.remove(slang.toUpperCase());
-                    System.out.println("After removing slang: " + slangs);
+                    slangs.remove(slang);
                     if (slangs.isEmpty()) {
-                        System.out.println("Removing definition: " + def);
-                        definitionMap.remove(def.toLowerCase());
+                        definitionMap.remove(def);
                     } 
                     else {
                         definitionMap.put(def, slangs);
                     }
                 }
-                System.out.println(slangs);
-                System.out.println();
             }
             slangMap.remove(slang);
             System.out.println("Slang word deleted.");

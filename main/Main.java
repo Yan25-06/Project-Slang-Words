@@ -49,11 +49,7 @@ public class Main{
                 case 5 -> {
                     System.out.println("Enter a slang word to edit:");
                     String slang = scanner.nextLine();
-                    System.out.println("Enter the old definition of the slang:");
-                    String oldDef = scanner.nextLine();
-                    System.out.println("Enter the new definition of the slang:");
-                    String newDef = scanner.nextLine();
-                    dictionary.editSlang(slang, oldDef, newDef);
+                    dictionary.editSlang(slang);
                 }
                 case 6 -> {
                     System.out.println("Enter a slang word to delete:");

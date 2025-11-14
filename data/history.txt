@@ -46,3 +46,58 @@ be right back -> null
 AWS -> [As We Speak]
 HB -> [Hurry Back]
 HB -> [Hurry Back]
+hello -> [ELLO, HEYO, HI, HIYA, HOLA, IYA, JAMBO, LO, NIHAO, SLM, SLT, YELLO]
+forever -> [4E4, 4EVA, 4EVER]
+hello -> [ELLO, HEYO, HI, HIYA, HOLA, IYA, JAMBO, LO, NIHAO, SLM, SLT, YELLO]
+hello -> [AYYO, ELLO, G'DAY, HEY, HEYO, HI, HIYA, HOLA, IYA, JAMBO, LO, NIHAO, ORITE, SLM, SLT, YELLO]
+brb -> null
+BRB -> null
+be right back -> [BRB]
+BRB -> null
+brb -> null
+<> -> [Not equal, No comment]
+lol -> null
+brb -> [Be Right Back]
+brb -> [Be Right Back]
+brb -> [Be Right Back]
+brb -> [Be Right Back]
+brb -> [Be Right Back, hehe]
+hehe -> [BRB]
+brb -> null
+bbbrb -> [Be Right Back, hehe]
+Be Right Back -> [BBBRB]
+bbbrb -> null
+be right back -> [BRB]
+brb -> [Be Right Back, hihii]
+hihii -> null
+hehe -> [BRB]
+brb -> [Be Right Back, hehe]
+heheee -> null
+hehe -> [BRB]
+heheee -> [BRB]
+brb -> [Be Right Back, heheee]
+hehe -> null
+smile -> null
+smile -> null
+:> -> [smile]
+brb -> null
+be right back -> null
+smile -> null
+:> -> [smile]
+smile -> null
+Mischivous smile -> null
+Mischievous smile -> [:>, ^~^]
+smile -> null
+^~^ -> [Mischievous Smile, smile]
+Mischievous Smile -> [:>, ^~^]
+:> -> [Mischievous smile]
+smile -> [:-)]
+Mischievous smile -> [:>, ^~^]
+keke -> null
+lol -> [laugh out load]
+laugh out load -> null
+lol -> [Laughing Out Loud]
+lol -> [laugh lol]
+laugh lol -> [LOL]
+laugh out loud    -> null
+laugh out loud -> [LOLZ]

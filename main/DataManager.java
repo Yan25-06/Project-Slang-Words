@@ -66,12 +66,13 @@ public class DataManager {
             String[] parts = line.split("`");
             if (parts.length != 2) 
                 continue;
-            String slang = parts[0].trim().toLowerCase(Locale.ROOT);
+            String slang = parts[0].trim().toUpperCase(Locale.ROOT);
             String[] definitions = parts[1].split("\\|");
+            List<String> defList = new ArrayList<>();
             for (int i = 0; i < definitions.length; i++) {
                 definitions[i] = definitions[i].trim();
+                defList.add(definitions[i]);
             }
-            List<String> defList = Arrays.asList(definitions);
             slangMap.put(slang, defList);
         }
         fr.close();
