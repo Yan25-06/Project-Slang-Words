@@ -123,3 +123,7 @@ HGV -> [Heavy Goods Vehicle]
 DKM -> [Don't Kill Me]
 TWS -> [Typical Woman Syndrome]
 3 -> null
+hello -> null
+hi -> [Hello]
+hello -> [ELLO, HEYO, HI, HIYA, HOLA, IYA, JAMBO, LO, NIHAO, SLM, SLT, YELLO]
+brb -> [Be Right Back]

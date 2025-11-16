@@ -1,5 +1,4 @@
-package main;
-
+package model;
 import java.io.*;
 import java.util.*;
 
