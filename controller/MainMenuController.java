@@ -3,6 +3,7 @@ package controller;
 import model.SlangDictionary;
 import view.MainMenuView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -95,7 +96,45 @@ public class MainMenuController {
     private void addSlang() {
         String slang = JOptionPane.showInputDialog(view, "Enter slang:");
         String def = JOptionPane.showInputDialog(view, "Enter definition:");
-        if (slang != null && def != null) dictionary.addSlang(slang, def);
+        if (slang == null || def == null) {
+            return;
+        }
+        slang = slang.toUpperCase();
+        List<String> newDefs = new ArrayList<>();
+        newDefs.add(def);
+        List<String> newSlangs = new ArrayList<>();
+        newSlangs.add(slang);
+        int res = dictionary.addSlang(slang, def, newDefs, newSlangs);
+        if (res == 1) {
+            String[] options = {"Overwrite", "Duplicate"};
+            int choice = JOptionPane.showOptionDialog(
+                null,
+                "Slang word already exists. Choose an action:",
+                "Slang Exists",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+            );
+            String cases = dictionary.doChoice(choice, slang, def, newDefs, newSlangs);
+            if (cases.equals("OVERWRITTEN")) {
+                view.panelManage.resultArea.append("Slang word overwritten.");
+            }
+            else if (cases.equals("DUPLICATED")) {
+                view.panelManage.resultArea.append("Slang word duplicated.");
+            }
+            else if (cases.equals("EXISTED DEF")) {
+                view.panelManage.resultArea.append("Definition already exists for this slang word.");
+            }
+            else {
+                view.panelManage.resultArea.append("Invalid choice");
+            }
+        }    
+        else if (res == 2) {
+            view.panelManage.resultArea.append("Slang word added.");
+        }
+        dictionary.updateMap();
     }
 
     private void editSlang() {

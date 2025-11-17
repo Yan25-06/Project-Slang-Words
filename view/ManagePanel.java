@@ -9,12 +9,16 @@ public class ManagePanel extends JPanel {
     public JButton btnEdit = new JButton("Edit slang");
     public JButton btnDelete = new JButton("Delete slang");
     public JButton btnReset = new JButton("Reset dictionary");
+    public JPanel buttonPanel = null;
+    public JTextArea resultArea = null;
+    public JScrollPane resultScrollPane = null;
+    public JScrollPane scrollPane =null;
 
     public ManagePanel() {
         setLayout(new BorderLayout(10, 10));
 
         // LEFT: Buttons
-        JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+        buttonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
         // buttonPanel.setPreferredSize(new Dimension(150, 200));
         buttonPanel.add(btnAdd);
         buttonPanel.add(btnEdit);
@@ -24,14 +28,14 @@ public class ManagePanel extends JPanel {
 
         add(buttonPanel, BorderLayout.EAST);
 
-        // CENTER: Result area
-        JTextArea resultArea = new JTextArea();
+        // // CENTER: Result area
+        resultArea = new JTextArea();
         resultArea.setEditable(false);
         resultArea.setFont(new Font("Arial", Font.PLAIN, 14));
         resultArea.setLineWrap(true);
         resultArea.setWrapStyleWord(true);
 
-        JScrollPane resultScrollPane = new JScrollPane(resultArea);
+        resultScrollPane = new JScrollPane(resultArea);
         add(resultScrollPane, BorderLayout.CENTER);
         
         // LEFT: Info text
@@ -50,7 +54,8 @@ public class ManagePanel extends JPanel {
                 "• Delete slang: Remove a slang word from the dictionary.\n" +
                 "• Reset dictionary: Restore the dictionary to its original state."
         );
-        JScrollPane scrollPane = new JScrollPane(infoArea);
+
+        scrollPane = new JScrollPane(infoArea);
         add(scrollPane, BorderLayout.WEST);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
     }
