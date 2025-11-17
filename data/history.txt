@@ -127,3 +127,11 @@ hello -> null
 hi -> [Hello]
 hello -> [ELLO, HEYO, HI, HIYA, HOLA, IYA, JAMBO, LO, NIHAO, SLM, SLT, YELLO]
 brb -> [Be Right Back]
+brb -> [Be Right Back]
+brb -> [Be Right Back]
+>.< -> [Frustrated, angry, upset, in pain]
+hello -> [ELLO, HEYO, HI, HIYA, HOLA, IYA, JAMBO, LO, NIHAO, SLM, SLT, YELLO]
+brb -> [Be Right Back]
+brb -> [BRBK]
+be right back -> [BRB]
+ii -> null

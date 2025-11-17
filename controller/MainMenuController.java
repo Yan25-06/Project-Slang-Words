@@ -3,6 +3,8 @@ package controller;
 import model.SlangDictionary;
 import view.MainMenuView;
 
+import java.util.List;
+
 import javax.swing.*;
 
 public class MainMenuController {
@@ -13,45 +15,81 @@ public class MainMenuController {
         this.dictionary = dictionary;
         this.view = view;
 
-        // Gắn sự kiện cho các nút
-        view.btnSearchSlang.addActionListener(e -> searchSlang());
-        view.btnSearchDefinition.addActionListener(e -> searchDefinition());
-        view.btnShowHistory.addActionListener(e -> showHistory());
-        view.btnAddSlang.addActionListener(e -> addSlang());
-        view.btnEditSlang.addActionListener(e -> editSlang());
-        view.btnDeleteSlang.addActionListener(e -> deleteSlang());
-        view.btnRandom.addActionListener(e -> dictionary.getRandomSlang());
-        view.btnQuizSlang.addActionListener(e -> dictionary.quizSlang());
-        view.btnQuizDefinition.addActionListener(e -> dictionary.quizDefinition());
-        view.btnReset.addActionListener(e -> dictionary.resetDictionary());
+        // ====== LỊCH SỬ ======
+        view.groupHistory.addActionListener(e -> loadHistory());
+
+        // ====== SEARCH PANEL ======
+        view.panelSearch.btnSearchSlang.addActionListener(e -> searchSlang());
+        view.panelSearch.btnSearchDefinition.addActionListener(e -> searchDefinition());
+
+        // ====== MANAGE PANEL ======
+        view.panelManage.btnAdd.addActionListener(e -> addSlang());
+        view.panelManage.btnEdit.addActionListener(e -> editSlang());
+        view.panelManage.btnDelete.addActionListener(e -> deleteSlang());
+        view.panelManage.btnReset.addActionListener(e -> dictionary.resetDictionary());
+
+        // ====== RANDOM PANEL ======
+        view.panelRandom.btnRandom.addActionListener(e ->
+                JOptionPane.showMessageDialog(view, dictionary.getRandomSlang())
+        );
+
+        // ====== QUIZ PANEL ======
+        view.panelQuiz.btnQuizSlang.addActionListener(e -> dictionary.quizSlang());
+        view.panelQuiz.btnQuizDefinition.addActionListener(e -> dictionary.quizDefinition());
     }
 
     private void searchSlang() {
         String slang = JOptionPane.showInputDialog(view, "Enter slang:");
-        if (slang != null) {
+        if (slang != null && !slang.trim().isEmpty()) {
             try {
-                JOptionPane.showMessageDialog(view, dictionary.searchSlang(slang));
+                List<String> defs = dictionary.searchSlang(slang);
+                view.panelSearch.resultModel.clear();
+                if (defs == null || defs.isEmpty()) {
+                    view.panelSearch.resultModel.addElement("No results found for: " + slang);
+                } else {
+                    for (String def : defs) {
+                        view.panelSearch.resultModel.addElement(def);
+                    }
+                }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view, "Error searching slang: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                view.panelSearch.resultModel.clear();
+                view.panelSearch.resultModel.addElement("Error: " + ex.getMessage());
             }
         }
     }
-
     private void searchDefinition() {
         String definition = JOptionPane.showInputDialog(view, "Enter definition:");
-        if (definition != null) {
+        if (definition != null && !definition.trim().isEmpty()) {
             try {
-                JOptionPane.showMessageDialog(view, dictionary.searchDefinition(definition));
+                List<String> slangs = dictionary.searchDefinition(definition);
+                view.panelSearch.resultModel.clear();
+                if (slangs == null || slangs.isEmpty()) {
+                    view.panelSearch.resultModel.addElement("No results found for: " + definition);
+                } else {
+                    for (String slang : slangs) {
+                        view.panelSearch.resultModel.addElement(slang);
+                    }
+                }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view, "Error searching definition: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                view.panelSearch.resultModel.clear();
+                view.panelSearch.resultModel.addElement("Error: " + ex.getMessage());
             }
         }
     }
-    private void showHistory() {
+    private void loadHistory() {
         try {
-            dictionary.showHistory();
+            List<String> history = dictionary.showHistory();
+            view.panelHistory.model.clear();
+            if (history == null || history.isEmpty()) {
+                view.panelHistory.model.addElement("No history");
+            } else {
+                for (String item : history) {
+                    view.panelHistory.model.addElement(item);
+                }
+            }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(view, "Error loading history: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            view.panelHistory.model.clear();
+            view.panelHistory.model.addElement("Error loading history: " + ex.getMessage());
         }
     }
     private void addSlang() {

@@ -24,12 +24,8 @@ public class SlangDictionary {
         DataManager.saveToHistory(definition + " -> " + definitionMap.get(definition.toLowerCase()));
         return mean;
     }
-    public void showHistory() throws Exception {
-        System.out.println("======== HISTORY ========");
-        List<String> history = DataManager.loadHistory();
-        for (String slang : history) {
-            System.out.println(slang);
-        }
+    public List<String> showHistory() throws Exception {
+        return DataManager.loadHistory();
     }
     public void addSlang(String slang, String definations) {
         slang = slang.toUpperCase();
