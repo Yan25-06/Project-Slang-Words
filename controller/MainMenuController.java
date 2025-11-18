@@ -63,40 +63,38 @@ public class MainMenuController {
     }
 
     private void searchSlang() {
+        view.panelSearch.resultLabel.setText("");
         String slang = JOptionPane.showInputDialog(view, "Enter slang:");
         if (slang != null && !slang.trim().isEmpty()) {
             try {
                 List<String> defs = dictionary.searchSlang(slang);
-                view.panelSearch.resultModel.clear();
                 if (defs == null || defs.isEmpty()) {
-                    view.panelSearch.resultModel.addElement("No results found for: " + slang);
+                    view.panelSearch.resultLabel.setText("No results found for: " + slang);
                 } else {
                     for (String def : defs) {
-                        view.panelSearch.resultModel.addElement(def);
+                        view.panelSearch.resultLabel.setText(slang + ": " + def);
                     }
                 }
             } catch (Exception ex) {
-                view.panelSearch.resultModel.clear();
-                view.panelSearch.resultModel.addElement("Error: " + ex.getMessage());
+                view.panelSearch.resultLabel.setText("Error: " + ex.getMessage());
             }
         }
     }
     private void searchDefinition() {
+        view.panelSearch.resultLabel.setText("");
         String definition = JOptionPane.showInputDialog(view, "Enter definition:");
         if (definition != null && !definition.trim().isEmpty()) {
             try {
                 List<String> slangs = dictionary.searchDefinition(definition);
-                view.panelSearch.resultModel.clear();
                 if (slangs == null || slangs.isEmpty()) {
-                    view.panelSearch.resultModel.addElement("No results found for: " + definition);
+                    view.panelSearch.resultLabel.setText("No results found for: " + definition);
                 } else {
                     for (String slang : slangs) {
-                        view.panelSearch.resultModel.addElement(slang);
+                        view.panelSearch.resultLabel.setText(definition + ": " + slang);
                     }
                 }
             } catch (Exception ex) {
-                view.panelSearch.resultModel.clear();
-                view.panelSearch.resultModel.addElement("Error: " + ex.getMessage());
+                view.panelSearch.resultLabel.setText("Error: " + ex.getMessage());
             }
         }
     }
@@ -275,10 +273,11 @@ public class MainMenuController {
             if (choice == 1)
                 return;
             dictionary.deleteSlang(slang);
-            view.panelManage.resultArea.append("Slang " + slang + "was deleted");
+            view.panelManage.resultArea.append("Slang " + slang + " was deleted\n");
         }
     }
     private void resetDictionary() {
+        view.panelQuiz.resultArea.setText("");
         dictionary.resetDictionary();
         view.panelManage.resultArea.append("Dictionary reseted");
     }
@@ -312,7 +311,11 @@ public class MainMenuController {
 
         if (options.get(choice).equals(correctDef)) {
             view.panelQuiz.resultArea.append("Correct! \n");
-        } else {
+        }
+        else if (choice < 0 || choice > 3){
+            return;
+        }
+        else {
             view.panelQuiz.resultArea.append("Wrong! The correct answer is: " + correctDef);
         }
     }
@@ -342,7 +345,11 @@ public class MainMenuController {
 
         if (options.get(choice).equals(correctSlang)) {
             view.panelQuiz.resultArea.append("Correct! \n");
-        } else {
+        } 
+        else if (choice < 0 || choice > 3){
+            return;
+        }
+        else {
             view.panelQuiz.resultArea.append("Wrong! The correct answer is: " + correctSlang);
         }
     }

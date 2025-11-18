@@ -67,12 +67,16 @@ public class DataManager {
                 continue;
             String slang = parts[0].trim().toUpperCase(Locale.ROOT);
             String[] definitions = parts[1].split("\\|");
-            List<String> defList = new ArrayList<>();
-            for (int i = 0; i < definitions.length; i++) {
-                definitions[i] = definitions[i].trim();
-                defList.add(definitions[i]);
+            slangMap.putIfAbsent(slang, new ArrayList<>());
+
+            List<String> defList = slangMap.get(slang);
+
+            for (String def : definitions) {
+                def = def.trim();
+                if (!defList.contains(def)) { 
+                    defList.add(def);
+                }
             }
-            slangMap.put(slang, defList);
         }
         fr.close();
         saveSlangDat(slangMap);
