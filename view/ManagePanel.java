@@ -13,6 +13,10 @@ public class ManagePanel extends JPanel {
     public JTextArea resultArea = null;
     public JScrollPane resultScrollPane = null;
     public JScrollPane scrollPane =null;
+    public JTextField slangField;
+    public JTextField defField;
+    public JPanel inputPanel;
+
 
     public ManagePanel() {
         setLayout(new BorderLayout(10, 10));
@@ -28,7 +32,29 @@ public class ManagePanel extends JPanel {
 
         add(buttonPanel, BorderLayout.EAST);
 
-        // // CENTER: Result area
+        // CENTER PANEL
+        JPanel centerPanel = new JPanel(new BorderLayout());
+
+        // ----- INPUT PANEL (Slang + Definition) -----
+        // inputPanel = new JPanel();
+        // inputPanel.setLayout(new GridLayout(2, 2, 5, 5));
+
+        // // Label + field for slang
+        // inputPanel.add(new JLabel("Enter Slang:"));
+        // slangField = new JTextField();
+        // slangField.setFont(new Font("Arial", Font.PLAIN, 14));
+        // inputPanel.add(slangField);
+
+        // // Label + field for definition
+        // inputPanel.add(new JLabel("Enter Definition:"));
+        // defField = new JTextField();
+        // defField.setFont(new Font("Arial", Font.PLAIN, 14));
+        // inputPanel.add(defField);
+
+        // // Add input panel on top
+        // centerPanel.add(inputPanel, BorderLayout.NORTH);
+
+        // ----- RESULT AREA -----
         resultArea = new JTextArea();
         resultArea.setEditable(false);
         resultArea.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -36,7 +62,13 @@ public class ManagePanel extends JPanel {
         resultArea.setWrapStyleWord(true);
 
         resultScrollPane = new JScrollPane(resultArea);
-        add(resultScrollPane, BorderLayout.CENTER);
+
+        // Add result area in center
+        centerPanel.add(resultScrollPane, BorderLayout.CENTER);
+
+        // Thêm panel vào frame
+        add(centerPanel, BorderLayout.CENTER);
+
         
         // LEFT: Info text
         JTextArea infoArea = new JTextArea();

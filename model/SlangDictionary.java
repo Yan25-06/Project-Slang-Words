@@ -4,9 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Consumer;
-
-import javax.swing.JOptionPane;
 
 public class SlangDictionary {
     private static final Scanner scanner = new Scanner(System.in);
@@ -62,109 +59,78 @@ public class SlangDictionary {
         updateSlangMap();
         updateDefMap();
     }
-    public void editSlang(String slang) {
+    public String editSlang(String slang) {
         slang = slang.toUpperCase();
         if (!slangMap.containsKey(slang)) {
-            // log("Slang word not found.");
-            return;
+            return "NOTFOUND";
         }
-        // log("1. Edit Slang");
-        // log("2. Edit Definition");
-        // log("Choose: ");
-        int choice;
-        choice = Integer.parseInt(scanner.nextLine());
-        if (choice == 1) {
-            // log("Enter new slang word: ");
-            String newSlang = scanner.nextLine().toUpperCase();
-            if (slangMap.containsKey(newSlang)) {
-                // log("Slang word already exists.");
-                return;
-            }
-            List<String> definitions = slangMap.get(slang);
-            slangMap.remove(slang);
-            slangMap.put(newSlang, definitions);
-            for (String def : definitions) {
-                def = def.toLowerCase();
-                List<String> slangs = definitionMap.get(def);
-                slangs.remove(slang);
-                slangs.add(newSlang);
-                definitionMap.put(def, slangs);
-            }
-            // log("Slang word edited.");
-        } 
-        else if (choice == 2) {
-            List<String> definitions = slangMap.get(slang);
-            for (int i = 0; i < definitions.size(); i++) {
-                // log((i + 1) + ". " + definitions.get(i));
-            }
-            // log("Choose definition to edit: ");
-            int defChoice = Integer.parseInt(scanner.nextLine());
-            String newDef;
-            String oldDef = definitions.get(defChoice - 1);
-            while (true)
-            {
-                // log("Enter new definition: ");
-                newDef = scanner.nextLine().trim();
-                if (definitionMap.containsKey(newDef.toLowerCase())) {
-                    // log("Definition existed, try again.");
-                }
-                else
-                    break;
-            }
-            // Update slangMap
-            List<String> slangs = definitionMap.get(oldDef.toLowerCase());
-            System.out.print(slangs);
-            for (String s : slangs) {
-                List<String> defs = slangMap.get(s);
-                defs.remove(oldDef);
-                defs.add(newDef);
-                slangMap.put(s, defs);
-            }
-            // Update definitionMap
-            List<String> slangsForNewDef = definitionMap.get(oldDef.toLowerCase());
+        return "";
+    }
+    public void editDefinition(String newDef, String oldDef) {
+        // List<String> definitions = slangMap.get(slang);
+        // String newDef;
+        // String oldDef = definitions.get(defChoice - 1);
+        // while (true)
+        // {
+        //     // log("Enter new definition: ");
+        //     newDef = scanner.nextLine().trim();
+        //     if (definitionMap.containsKey(newDef.toLowerCase())) {
+        //         // log("Definition existed, try again.");
+        //     }
+        //     else
+        //         break;
+        // }
+        // Update slangMap
+        List<String> slangs = definitionMap.get(oldDef.toLowerCase());
+        System.out.print(slangs);
+        for (String s : slangs) {
+            List<String> defs = slangMap.get(s);
+            defs.remove(oldDef);
+            defs.add(newDef);
+            slangMap.put(s, defs);
+        }
+        // Update definitionMap
+        List<String> slangsForNewDef = definitionMap.get(oldDef.toLowerCase());
 
-            definitionMap.remove(oldDef);
-            definitionMap.put(newDef, slangsForNewDef);
-            // log("Definition edited.");
-            updateDefMap();
-            updateSlangMap();
-        } 
-        else {
-            // log("Invalid choice.");
+        definitionMap.remove(oldDef);
+        definitionMap.put(newDef, slangsForNewDef);
+    }
+    public String editSlangWord(String newSlang, String slang) {
+        if (slangMap.containsKey(newSlang)) {
+            return "EXISTED SLANG";
         }
+        List<String> definitions = slangMap.get(slang);
+        slangMap.remove(slang);
+        slangMap.put(newSlang, definitions);
+        for (String def : definitions) {
+            def = def.toLowerCase();
+            List<String> slangs = definitionMap.get(def);
+            slangs.remove(slang);
+            slangs.add(newSlang);
+            definitionMap.put(def, slangs);
+        }
+        return "EDITED SLANG";
     }
     public void deleteSlang(String slang) {
         slang = slang.toUpperCase();
-        if (slangMap.containsKey(slang)) {
-            // log("Are you sure you want to delete this slang word? (Y/N)");
-            String confirmation = scanner.nextLine();
-            if (!confirmation.equalsIgnoreCase("Y")) {
-                // log("Deletion cancelled.");
-                return;
-            }
-            List<String> definitions = slangMap.get(slang);
-            for (String def : definitions) {
-                def = def.toLowerCase();
-                List<String> slangs = definitionMap.get(def);
-                if (slangs != null) {
-                    slangs.remove(slang);
-                    if (slangs.isEmpty()) {
-                        definitionMap.remove(def);
-                    } 
-                    else {
-                        definitionMap.put(def, slangs);
-                    }
+        List<String> definitions = slangMap.get(slang);
+        for (String def : definitions) {
+            def = def.toLowerCase();
+            List<String> slangs = definitionMap.get(def);
+            if (slangs != null) {
+                slangs.remove(slang);
+                if (slangs.isEmpty()) {
+                    definitionMap.remove(def);
+                } 
+                else {
+                    definitionMap.put(def, slangs);
                 }
             }
-            slangMap.remove(slang);
-            // log("Slang word deleted.");
-            updateSlangMap();
-            updateDefMap();
-        } 
-        else {
-            // log("Slang word not found.");
         }
-    }
+        slangMap.remove(slang);
+        updateSlangMap();
+        updateDefMap();
+    } 
     public void resetDictionary() {
         try {
             slangMap = DataManager.loadSlangFromText();

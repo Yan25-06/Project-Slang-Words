@@ -12,7 +12,7 @@ public class MainMenuController {
     private SlangDictionary dictionary;
     private MainMenuView view;
 
-    public MainMenuController(SlangDictionary dictionary, MainMenuView view) {
+    public MainMenuController(SlangDictionary dictionary, MainMenuView view) throws Exception{
         this.dictionary = dictionary;
         this.view = view;
 
@@ -24,10 +24,28 @@ public class MainMenuController {
         view.panelSearch.btnSearchDefinition.addActionListener(e -> searchDefinition());
 
         // ====== MANAGE PANEL ======
-        view.panelManage.btnAdd.addActionListener(e -> addSlang());
-        view.panelManage.btnEdit.addActionListener(e -> editSlang());
-        view.panelManage.btnDelete.addActionListener(e -> deleteSlang());
-        view.panelManage.btnReset.addActionListener(e -> dictionary.resetDictionary());
+        view.panelManage.btnAdd.addActionListener(e -> {
+            try {
+                addSlang();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view, "Error: " + ex.getMessage());
+            }
+        });
+        view.panelManage.btnEdit.addActionListener(e -> {
+            try {
+                editSlang();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view, "Error: " + ex.getMessage());
+            }
+        });
+        view.panelManage.btnDelete.addActionListener(e -> {
+            try {
+                deleteSlang();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view, "Error: " + ex.getMessage());
+            }
+        });
+        view.panelManage.btnReset.addActionListener(e -> resetDictionary());
 
         // ====== RANDOM PANEL ======
         view.panelRandom.btnRandom.addActionListener(e ->
@@ -93,9 +111,10 @@ public class MainMenuController {
             view.panelHistory.model.addElement("Error loading history: " + ex.getMessage());
         }
     }
-    private void addSlang() {
-        String slang = JOptionPane.showInputDialog(view, "Enter slang:");
-        String def = JOptionPane.showInputDialog(view, "Enter definition:");
+    private void addSlang() throws Exception {
+        view.panelManage.resultArea.setText("");
+        String slang = JOptionPane.showInputDialog(view, "Enter slang");
+        String def = JOptionPane.showInputDialog(view, "Enter new definition");
         if (slang == null || def == null) {
             return;
         }
@@ -119,31 +138,143 @@ public class MainMenuController {
             );
             String cases = dictionary.doChoice(choice, slang, def, newDefs, newSlangs);
             if (cases.equals("OVERWRITTEN")) {
-                view.panelManage.resultArea.append("Slang word overwritten.");
+                view.panelManage.resultArea.append("Slang word overwritten.\n");
             }
             else if (cases.equals("DUPLICATED")) {
-                view.panelManage.resultArea.append("Slang word duplicated.");
+                view.panelManage.resultArea.append("Slang word duplicated.\n");
             }
             else if (cases.equals("EXISTED DEF")) {
-                view.panelManage.resultArea.append("Definition already exists for this slang word.");
+                view.panelManage.resultArea.append("Definition already exists for this slang word.\n");
             }
             else {
                 view.panelManage.resultArea.append("Invalid choice");
             }
         }    
         else if (res == 2) {
-            view.panelManage.resultArea.append("Slang word added.");
+            view.panelManage.resultArea.append("Slang word added.\n");
+        }
+        view.panelManage.resultArea.append("Slang after added \n");
+        view.panelManage.resultArea.append(slang + " : " + dictionary.searchSlang(slang));
+        dictionary.updateMap();
+    }
+
+    private void editSlang() throws Exception{
+        view.panelManage.resultArea.setText("");
+        String slang = JOptionPane.showInputDialog(view, "Enter slang need to edit:");
+        if (slang == null)
+            return;
+        if (dictionary.editSlang(slang).equals("NOTFOUND"))
+            view.panelManage.resultArea.append("Slang word not found.");
+        else {
+            String[] options = {"Edit slang", "Edit definition"};
+            int choice = JOptionPane.showOptionDialog(
+                null,
+                "Choose an action:",
+                "Edit choice",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+            );
+            if (choice == 0) {
+                String newSlang = JOptionPane.showInputDialog(view, "Enter new slang");
+                String cases = dictionary.editSlangWord(newSlang, slang);
+                if (cases.equals("EXISTED SLANG")) {
+                    view.panelManage.resultArea.append("Slang word already exists.\n");
+                }
+                else if (cases.equals("EDITED SLANG")) {
+                    view.panelManage.resultArea.append("Slang word was edited.\n");
+                }
+                else 
+                    view.panelManage.resultArea.append("Invalid choice");
+
+                view.panelManage.resultArea.append("Slang after edited \n");
+                view.panelManage.resultArea.append(newSlang + " : " + dictionary.searchSlang(newSlang));
+            }
+            else {
+                List<String> definitions = dictionary.searchSlang(slang);
+                view.panelManage.resultArea.append("Definitions for " + slang + ":\n");
+                for (int i = 0; i < definitions.size(); i++) {
+                    view.panelManage.resultArea.append((i + 1) + ". " + definitions.get(i) + "\n");
+                }
+                Object[] defList = definitions.toArray();
+                int defOption = JOptionPane.showOptionDialog(
+                    null,
+                    "Choose a definition to edit:",
+                    "Edit definition",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    defList,
+                    defList[0]
+                );
+                if (defOption == JOptionPane.CLOSED_OPTION || defOption < 0) {
+                    view.panelManage.resultArea.append("Edit canceled.\n");
+                    return;
+                }               
+                String oldDef = definitions.get(defOption);
+                view.panelManage.resultArea.append("You selected: " + oldDef + "\n");
+
+                String newDef = null;
+                while (true) {
+                    newDef = JOptionPane.showInputDialog(view, "Enter new definition:");
+
+                    if (newDef == null) {
+                        view.panelManage.resultArea.append("Edit canceled.\n");
+                        return;
+                    }
+                    newDef = newDef.trim();
+                    if (newDef.isEmpty()) {
+                        JOptionPane.showMessageDialog(view, "Definition cannot be empty. Try again.");
+                        continue;
+                    }
+
+                    List<String> existingDefs = dictionary.searchDefinition(slang);
+                    if (existingDefs != null && existingDefs.contains(newDef)) {
+                        JOptionPane.showMessageDialog(view, "This definition already exists. Try another one.");
+                        continue;
+                    }
+                    break;
+                }
+                dictionary.editDefinition(newDef, oldDef);
+                view.panelManage.resultArea.append("Definition edited\n");
+
+                view.panelManage.resultArea.append("Slang after edited \n");
+                view.panelManage.resultArea.append(slang + " : " + dictionary.searchSlang(slang));
+            }
         }
         dictionary.updateMap();
     }
 
-    private void editSlang() {
-        String slang = JOptionPane.showInputDialog(view, "Enter slang to edit:");
-        if (slang != null) dictionary.editSlang(slang);
-    }
-
-    private void deleteSlang() {
+    private void deleteSlang() throws Exception{
+        view.panelManage.resultArea.setText("");
         String slang = JOptionPane.showInputDialog(view, "Enter slang to delete:");
-        if (slang != null) dictionary.deleteSlang(slang);
+        if (slang == null) 
+            return;
+        if (dictionary.searchSlang(slang) == null) {
+            view.panelManage.resultArea.append("Slang word not found.");
+        }
+        else {
+            String[] options = {"Yes", "No"};
+            int choice = JOptionPane.showOptionDialog(
+                null,
+                "Are you sure you want to delete this slang word?",
+                "Confirm",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+            );
+            if (choice == 1)
+                return;
+            dictionary.deleteSlang(slang);
+            view.panelManage.resultArea.append("Slang " + slang + "was deleted");
+        }
+    }
+    private void resetDictionary() {
+        dictionary.resetDictionary();
+        view.panelManage.resultArea.append("Dictionary reseted");
     }
 }
