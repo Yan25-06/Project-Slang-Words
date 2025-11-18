@@ -35,29 +35,10 @@ public class ManagePanel extends JPanel {
         // CENTER PANEL
         JPanel centerPanel = new JPanel(new BorderLayout());
 
-        // ----- INPUT PANEL (Slang + Definition) -----
-        // inputPanel = new JPanel();
-        // inputPanel.setLayout(new GridLayout(2, 2, 5, 5));
-
-        // // Label + field for slang
-        // inputPanel.add(new JLabel("Enter Slang:"));
-        // slangField = new JTextField();
-        // slangField.setFont(new Font("Arial", Font.PLAIN, 14));
-        // inputPanel.add(slangField);
-
-        // // Label + field for definition
-        // inputPanel.add(new JLabel("Enter Definition:"));
-        // defField = new JTextField();
-        // defField.setFont(new Font("Arial", Font.PLAIN, 14));
-        // inputPanel.add(defField);
-
-        // // Add input panel on top
-        // centerPanel.add(inputPanel, BorderLayout.NORTH);
-
         // ----- RESULT AREA -----
         resultArea = new JTextArea();
         resultArea.setEditable(false);
-        resultArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        resultArea.setFont(new Font("Arial", Font.PLAIN, 20));
         resultArea.setLineWrap(true);
         resultArea.setWrapStyleWord(true);
 

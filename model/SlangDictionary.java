@@ -150,8 +150,7 @@ public class SlangDictionary {
         int randomIndex = (int) (Math.random() * keys.size());
         return keys.get(randomIndex);
     }
-    public void quizSlang() {
-        String slang = getRandomSlang();
+    public List<String> quizSlang(String slang) {
         List<String> correctDefs = slangMap.get(slang);
         String correctDef = correctDefs.get(0); 
 
@@ -169,24 +168,9 @@ public class SlangDictionary {
         options.add(correctDef);
         options.addAll(wrongAnswers);
 
-        Collections.shuffle(options);
-
-        // log("What is the definition of: " + slang + "?");
-        for (int i = 0; i < 4; i++) {
-            // log((i + 1) + ". " + options.get(i));
-        }
-
-        System.out.print("Your answer: ");
-        int choice = Integer.parseInt(scanner.nextLine());
-
-        if (options.get(choice - 1).equals(correctDef)) {
-            // log("Correct!");
-        } else {
-            // log("Wrong! The correct answer is: " + correctDef);
-        }
+        return options;
     }
-    public void quizDefinition() {
-        String def = getRandomDefinition();
+    public List<String> quizDefinition(String def) {
         List<String> correctSlangs = definitionMap.get(def);
         String correctSlang = correctSlangs.get(0); 
 
@@ -203,22 +187,7 @@ public class SlangDictionary {
         options.add(correctSlang);
         options.addAll(wrongSlangs);
 
-        Collections.shuffle(options);
-
-        // log("Which slang matches this definition?");
-        // log("Definition: " + def);
-        for (int i = 0; i < 4; i++) {
-            // log((i + 1) + ". " + options.get(i));
-        }
-
-        System.out.print("Your answer: ");
-        int choice = Integer.parseInt(scanner.nextLine());
-
-        if (options.get(choice - 1).equals(correctSlang)) {
-            // log("Correct!");
-        } else {
-            // log("Wrong! The correct answer is: " + correctSlang);
-        }
+        return options;
     }
     private void updateSlangMap() {
         try {

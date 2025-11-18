@@ -4,6 +4,7 @@ import model.SlangDictionary;
 import view.MainMenuView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.*;
@@ -48,13 +49,17 @@ public class MainMenuController {
         view.panelManage.btnReset.addActionListener(e -> resetDictionary());
 
         // ====== RANDOM PANEL ======
-        view.panelRandom.btnRandom.addActionListener(e ->
-                JOptionPane.showMessageDialog(view, dictionary.getRandomSlang())
-        );
+        view.panelRandom.btnRandom.addActionListener(e -> {
+            try {
+                randomSlang();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view, "Error: " + ex.getMessage());
+            }
+        });
 
         // ====== QUIZ PANEL ======
-        view.panelQuiz.btnQuizSlang.addActionListener(e -> dictionary.quizSlang());
-        view.panelQuiz.btnQuizDefinition.addActionListener(e -> dictionary.quizDefinition());
+        view.panelQuiz.btnQuizSlang.addActionListener(e -> quizSlang());
+        view.panelQuiz.btnQuizDefinition.addActionListener(e -> quizDefinition());
     }
 
     private void searchSlang() {
@@ -276,5 +281,69 @@ public class MainMenuController {
     private void resetDictionary() {
         dictionary.resetDictionary();
         view.panelManage.resultArea.append("Dictionary reseted");
+    }
+    private void randomSlang() throws Exception{
+        String randomSlang = dictionary.getRandomSlang();
+        view.panelRandom.result.setText(randomSlang + ": " + dictionary.searchSlang(randomSlang));
+    }
+    private void quizSlang() {
+        view.panelQuiz.resultArea.setText("");
+        String slang = dictionary.getRandomSlang();
+        List<String> options = dictionary.quizSlang(slang);
+        String correctDef = options.get(0);
+        Collections.shuffle(options);
+
+        view.panelQuiz.resultArea.append("What is the definition of: " + slang + "?\n");
+        for (int i = 0; i < 4; i++) {
+            view.panelQuiz.resultArea.append((i + 1) + ". " + options.get(i) + "\n");
+        }
+
+        Object[] defOptions = options.toArray();
+            int choice = JOptionPane.showOptionDialog(
+                null,
+                "Choose your answer",
+                "Confirm",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                defOptions,
+                defOptions[0]
+            );
+
+        if (options.get(choice).equals(correctDef)) {
+            view.panelQuiz.resultArea.append("Correct! \n");
+        } else {
+            view.panelQuiz.resultArea.append("Wrong! The correct answer is: " + correctDef);
+        }
+    }
+    private void quizDefinition() {
+        view.panelQuiz.resultArea.setText("");
+        String def = dictionary.getRandomDefinition();
+        List<String> options = dictionary.quizDefinition(def);
+        String correctSlang = options.get(0);
+        Collections.shuffle(options);
+
+        view.panelQuiz.resultArea.append("Which slang matches with \"" + def + "\" ?\n");
+        for (int i = 0; i < 4; i++) {
+            view.panelQuiz.resultArea.append((i + 1) + ". " + options.get(i) + "\n");
+        }
+
+        Object[] slangOptions = options.toArray();
+            int choice = JOptionPane.showOptionDialog(
+                null,
+                "Choose your answer",
+                "Confirm",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                slangOptions,
+                slangOptions[0]
+            );
+
+        if (options.get(choice).equals(correctSlang)) {
+            view.panelQuiz.resultArea.append("Correct! \n");
+        } else {
+            view.panelQuiz.resultArea.append("Wrong! The correct answer is: " + correctSlang);
+        }
     }
 }
